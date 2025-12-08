@@ -1,3 +1,9 @@
+
+
+
+Note-> Since ADMIN is only single entity there is one to many relationship with users so I have made pre-defined admin with its credential as
+email->admin@example.com
+password->admin123
 🏫 UniApply — Unified University Application Platform
 
 UniApply is a full-stack monolithic application that allows students to apply to universities online, upload required documents, and get AI-powered verification. Admin users review submissions and validate student applications.
