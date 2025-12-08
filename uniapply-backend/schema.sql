@@ -1,0 +1,62 @@
+-- UniApply minimal schema
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'STUDENT', -- STUDENT | ADMIN
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS universities (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  short_name TEXT NOT NULL,
+  location TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS programs (
+  id SERIAL PRIMARY KEY,
+  university_id INTEGER REFERENCES universities(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  name TEXT NOT NULL,
+  degree_level TEXT,
+  eligibility_rules JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS applications (
+  id UUID PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  university_id INTEGER REFERENCES universities(id) ON DELETE CASCADE,
+  program_id INTEGER REFERENCES programs(id) ON DELETE CASCADE,
+  status TEXT NOT NULL DEFAULT 'DRAFT', -- DRAFT | SUBMITTED | VERIFIED | ISSUE_RAISED | REJECTED
+  ai_status TEXT, -- AI_PENDING | AI_PASSED | AI_FLAGS_PRESENT | AI_FAILED
+  form_data JSONB,
+  eligibility_result JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS application_documents (
+  id SERIAL PRIMARY KEY,
+  application_id UUID REFERENCES applications(id) ON DELETE CASCADE,
+  doc_type TEXT NOT NULL, -- AADHAR | DL | MARKSHEET_10 | MARKSHEET_12 etc.
+  file_path TEXT NOT NULL,
+  original_name TEXT NOT NULL,
+  mime_type TEXT,
+  status TEXT NOT NULL DEFAULT 'UPLOADED', -- UPLOADED | PROCESSING | VERIFIED | ISSUE_RAISED | REJECTED
+  ai_result JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS application_comments (
+  id SERIAL PRIMARY KEY,
+  application_id UUID REFERENCES applications(id) ON DELETE CASCADE,
+  author_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  author_role TEXT,
+  message TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

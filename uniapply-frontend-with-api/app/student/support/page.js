@@ -1,0 +1,1 @@
+export default function Page() { return <p className='text-sm text-slate-600'>Student support page (placeholder).</p>; }
