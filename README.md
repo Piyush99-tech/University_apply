@@ -103,7 +103,7 @@ PostgreSQL ensures relational consistency across applicant records.
 
 Clone the repos:
 
-git clone https://github.com/Piyush99-tech/uniapply.git
+git clone https://github.com/Piyush99-tech/University_apply
 
 
 Install backend dependencies:
