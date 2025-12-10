@@ -141,9 +141,9 @@ npm install
 npm run dev
 
 
-Visit → http://localhost:3000 ✔
+Visit → https://uniapply-frontend-cbz1.onrender.com
 
-Backend API → http://localhost:4000/api
+Backend API → https://uniapply-backend-lr5s.onrender.com
 
 🧪 Test Users
 
