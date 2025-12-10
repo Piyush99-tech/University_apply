@@ -16,19 +16,19 @@ export const getAllPrograms = async (req, res, next) => {
 
 export const createProgram = async (req, res, next) => {
     try {
-        const { university_id, code, name, degree_level, eligibility_rules } = req.body;
+        const { university_id, name } = req.body;
 
         // Basic validation
-        if (!university_id || !code || !name) {
-            return res.status(400).json({ message: "University ID, Code and Name are required" });
+        if (!university_id || !name) {
+            return res.status(400).json({ message: "University ID and Name are required" });
         }
 
         const result = await query(
             `INSERT INTO programs 
-       (university_id, code, name, degree_level, eligibility_rules) 
-       VALUES ($1, $2, $3, $4, $5) 
+       (university_id, name) 
+       VALUES ($1, $2) 
        RETURNING *`,
-            [university_id, code, name, degree_level, eligibility_rules]
+            [university_id, name]
         );
 
         res.status(201).json({ program: result.rows[0] });
