@@ -11,7 +11,7 @@ export const getAllUniversities = async (req, res, next) => {
 
 export const createUniversity = async (req, res, next) => {
     try {
-        const { name, short_name, location } = req.body;
+        const { name, short_name } = req.body;
 
         // Basic validation
         if (!name || !short_name) {
@@ -19,8 +19,8 @@ export const createUniversity = async (req, res, next) => {
         }
 
         const result = await query(
-            "INSERT INTO universities (name, short_name, location) VALUES ($1, $2, $3) RETURNING *",
-            [name, short_name, location]
+            "INSERT INTO universities (name, short_name) VALUES ($1, $2) RETURNING *",
+            [name, short_name]
         );
 
         res.status(201).json({ university: result.rows[0] });
@@ -28,3 +28,4 @@ export const createUniversity = async (req, res, next) => {
         next(err);
     }
 };
+
